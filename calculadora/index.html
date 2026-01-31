@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Exótica - Lua</title>
+    <style>
+        :root {
+            --neon-purple: #bc13fe;
+            --neon-blue: #08f7fe;
+            --dark-bg: #0d0221;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Container Principal com Brilho Exótico */
+        .calculator {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(188, 19, 254, 0.2);
+            width: 320px;
+            transition: transform 0.3s ease;
+        }
+
+        .calculator:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 60px rgba(8, 247, 254, 0.3);
+        }
+
+        /* Display Estilo Terminal */
+        #display {
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: right;
+            padding: 10px;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        /* Grade de Botões */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+            border-color: transparent;
+        }
+
+        button.operator {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+
+        button.equal {
+            grid-column: span 2;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+        }
+
+        button.clear {
+            color: #ff4d4d;
+        }
+
+        /* Efeito de Partículas ao fundo (Simulação) */
+        .bg-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1b0a33 0%, #0d0221 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-effect"></div>
+
+    <div class="calculator">
+        <div style="text-align: center; margin-bottom: 15px; font-size: 0.8rem; letter-spacing: 2px; color: var(--neon-purple);">
+            INTERFACE LUA V1.0
+        </div>
+        <input type="text" id="display" disabled placeholder="0">
+        
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendToDisplay('**')">^</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+            
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendToDisplay(input) {
+            display.value += input;
+        }
+
+        function clearDisplay() {
+            display.value = "";
+        }
+
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                // eval() é usado aqui para simplificar, mas em sistemas reais 
+                // usa-se um parser matemático por segurança.
+                const result = eval(display.value);
+                
+                // Efeito Exótico: Se o resultado for par, brilha azul. Se ímpar, roxo.
+                if (result % 2 === 0) {
+                    display.style.color = "var(--neon-blue)";
+                    display.style.textShadow = "0 0 20px var(--neon-blue)";
+                } else {
+                    display.style.color = "var(--neon-purple)";
+                    display.style.textShadow = "0 0 20px var(--neon-purple)";
+                }
+
+                display.value = result;
+            } catch (error) {
+                display.value = "Erro Arcano";
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
